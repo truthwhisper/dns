@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:10-alpine-amd64 AS builder
+FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/sdk:11.0-alpine-amd64 AS builder
 
 WORKDIR /app
 
@@ -28,7 +28,7 @@ RUN dotnet publish DnsServer/DnsServerApp/DnsServerApp.csproj -c Release
 
 RUN mkdir -p /etc/dns /opt/technitium/dns /var/log/technitium/dns
 
-FROM builder AS build
+FROM mcr.microsoft.com/dotnet/runtime:11.0-alpine-amd64 AS runtime
 
 WORKDIR /opt/technitium/dns
 
