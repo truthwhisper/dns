@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:11.0-alpine-amd64 AS build
+FROM mcr.microsoft.com/dotnet/sdk:11.0-alpine-amd64
 
 WORKDIR /app
 
@@ -25,10 +25,6 @@ RUN dotnet build TechnitiumLibrary/TechnitiumLibrary.ByteTree/TechnitiumLibrary.
 RUN dotnet build TechnitiumLibrary/TechnitiumLibrary.Net/TechnitiumLibrary.Net.csproj -c Release
 RUN dotnet build TechnitiumLibrary/TechnitiumLibrary.Security.OTP/TechnitiumLibrary.Security.OTP.csproj -c Release
 RUN dotnet publish DnsServer/DnsServerApp/DnsServerApp.csproj -c Release
-
-FROM mcr.microsoft.com/dotnet/runtime:11.0-alpine-amd64 AS runtime
-
-COPY --link --from=build /app/DnsServer/DnsServerApp/bin/Release/publish /opt/technitium/dns
 
 WORKDIR /opt/technitium/dns
 
