@@ -40,7 +40,7 @@ EXPOSE \
    5380/tcp 53443/tcp \
    67/udp
 
-LABEL org.opencontainers.image.source="https://github.com/truthwhisper/dns"
+LABEL org.opencontainers.image.source="https://github.com/truthwhisper/truthwhisper.github.io"
 LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.description="Fork of Technitium DNS"
 LABEL org.opencontainers.image.authors="lucathar@gmail.com"
