@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 mcr.microsoft.com/dotnet/sdk:11.0-alpine-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:11.0-alpine-amd64 AS builder
 
 WORKDIR /app
 
@@ -16,25 +16,22 @@ RUN apk -U upgrade \
     curl \
     git \
     doggo
+RUN mkdir -p /etc/dns /opt/technitium/dns /var/log/technitium/dns
 
+WORKDIR /opt/technitium/dns
 RUN git clone --depth=1 https://github.com/TechnitiumSoftware/TechnitiumLibrary.git TechnitiumLibrary
 RUN git clone --depth=1 https://github.com/TechnitiumSoftware/DnsServer.git DnsServer
-
 RUN dotnet build TechnitiumLibrary/TechnitiumLibrary.ByteTree/TechnitiumLibrary.ByteTree.csproj -c Release
 RUN dotnet build TechnitiumLibrary/TechnitiumLibrary.Net/TechnitiumLibrary.Net.csproj -c Release
 RUN dotnet build TechnitiumLibrary/TechnitiumLibrary.Security.OTP/TechnitiumLibrary.Security.OTP.csproj -c Release
-
 RUN dotnet publish DnsServer/DnsServerApp/DnsServerApp.csproj -c Release
 
-RUN mkdir -p /etc/dns /opt/technitium/dns /var/log/technitium/dns
-
 FROM mcr.microsoft.com/dotnet/runtime:11.0-alpine-amd64 AS runtime
-
 WORKDIR /opt/technitium/dns
 
-COPY --link --from=builder ./DnsServer/DnsServerApp/bin/Release/publish /opt/technitium/dns
+COPY --link DnsServer/DnsServerApp/bin/Release/publish /opt/technitium/dns
 
-ENTRYPOINT ["/bin/sh", "-c", "dotnet", "/opt/technitium/dns/DnsServerApp.dll"]
+ENTRYPOINT ["/bin/dotnet", "/opt/technitium/dns/DnsServerApp.dll"]
 
 CMD ["/etc/dns", "/opt/technitium/dns", "/var/log/technitium/dns"]
 
