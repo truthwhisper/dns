@@ -1,0 +1,33 @@
+services:
+   dns-server:
+      container_name: dns-server
+      hostname: truthwhisper.github.io
+      image: ghcr.io/truthwhisper/truthwhisper.github.io:latest
+      ports:
+        - "5380:5380/tcp"
+        - "53443:53443/tcp"
+        - "53:53/udp"
+        - "53:53/tcp"
+        - "853:853/udp"
+        - "853:853/tcp"
+        - "443:443/udp"
+        - "443:443/tcp"
+        - "80:80/tcp"
+        - "8053:8053/tcp"
+        - "67/udp"
+      environment:
+        - DNS_SERVER_DOMAIN=lux-00
+        - DNS_SERVER_WEB_SERVICE_HTTP_PORT=5380
+        - DNS_SERVER_WEB_SERVICE_HTTPS_PORT=53443
+        - DNS_SERVER_LOG_FOLDER_PATH=/var/log/technitium/dns
+        - DNS_SERVER_CONFIG_FOLDER_PATH=/etc/dns
+      volumes:
+        - config:/etc/dns
+        - logs:/var/log/technitium/dns
+      restart: always
+      sysctls:
+        - net.ipv4.ip_local_port_range=1024 65535
+
+volumes:
+   config:
+   logs:
