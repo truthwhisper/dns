@@ -26,8 +26,6 @@ RUN dotnet build TechnitiumLibrary/TechnitiumLibrary.Net/TechnitiumLibrary.Net.c
 RUN dotnet build TechnitiumLibrary/TechnitiumLibrary.Security.OTP/TechnitiumLibrary.Security.OTP.csproj -c Release
 RUN dotnet publish DnsServer/DnsServerApp/DnsServerApp.csproj -c Release
 
-WORKDIR /opt/technitium/dns
-
 ENTRYPOINT ["/bin/dotnet", "/opt/technitium/dns/DnsServerApp.dll"]
 
 CMD ["/etc/dns", "/opt/technitium/dns", "/var/log/technitium/dns"]
