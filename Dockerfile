@@ -34,7 +34,7 @@ WORKDIR /opt/technitium/dns
 
 COPY --link --from=builder ./DnsServer/DnsServerApp/bin/Release/publish /opt/technitium/dns
 
-ENTRYPOINT ["/bin/sh", "dotnet", /opt/technitium/dns/DnsServerApp.dll"]
+ENTRYPOINT ["/bin/sh", "-c", "dotnet", "/opt/technitium/dns/DnsServerApp.dll"]
 
 CMD ["/etc/dns", "/opt/technitium/dns", "/var/log/technitium/dns"]
 
